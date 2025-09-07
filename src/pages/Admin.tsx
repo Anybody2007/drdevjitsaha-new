@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Lock, Shield } from 'lucide-react';
+import { AdminContentManager } from '@/components/AdminContentManager';
 
 const Admin = () => {
   const [password, setPassword] = useState('');
@@ -70,35 +71,7 @@ const Admin = () => {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="container-padding">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Content Management</h1>
-          <Button onClick={() => setIsAuthenticated(false)} variant="outline">
-            Logout
-          </Button>
-        </div>
-        
-        <div className="grid gap-6">
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Hero Section</h2>
-            <p className="text-muted-foreground">Manage hero content, images, and call-to-action text.</p>
-          </Card>
-          
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Doctor Information</h2>
-            <p className="text-muted-foreground">Update doctor bio, qualifications, and profile image.</p>
-          </Card>
-          
-          <Card className="p-6">
-            <h2 className="text-xl font-semibold mb-4">Treatments & Services</h2>
-            <p className="text-muted-foreground">Add, edit, or remove treatment options and pricing.</p>
-          </Card>
-        </div>
-      </div>
-    </div>
-  );
+  return <AdminContentManager />;
 };
 
 export default Admin;

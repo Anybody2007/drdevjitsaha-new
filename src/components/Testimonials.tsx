@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Star, Quote, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Star, Quote, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 
 interface Testimonial {
   id: string;
@@ -14,15 +15,30 @@ interface Testimonial {
   display_order: number;
 }
 
+interface VideoTestimonial {
+  id: string;
+  patient_name: string;
+  patient_image_url: string | null;
+  video_url: string;
+  video_thumbnail_url: string | null;
+  treatment_type: string;
+  title: string;
+  description: string;
+  display_order: number;
+  is_featured: boolean;
+}
+
 export const Testimonials = () => {
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [videoTestimonials, setVideoTestimonials] = useState<VideoTestimonial[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const loadTestimonials = async () => {
       try {
-        // This will be replaced with actual Supabase call
+        // Load text testimonials
         const mockData: Testimonial[] = [
           {
             id: '1',
@@ -76,6 +92,47 @@ export const Testimonials = () => {
           }
         ];
         setTestimonials(mockData.sort((a, b) => a.display_order - b.display_order));
+
+        // Load video testimonials
+        const videoMockData: VideoTestimonial[] = [
+          {
+            id: '1',
+            patient_name: 'John Smith',
+            patient_image_url: null,
+            video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            video_thumbnail_url: null,
+            treatment_type: 'Dental Implants',
+            title: 'Life-Changing Smile Transformation',
+            description: 'See how dental implants changed my confidence and life',
+            display_order: 1,
+            is_featured: true
+          },
+          {
+            id: '2',
+            patient_name: 'Maria Garcia',
+            patient_image_url: null,
+            video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            video_thumbnail_url: null,
+            treatment_type: 'Cosmetic Dentistry',
+            title: 'Perfect Smile Journey',
+            description: 'My experience with cosmetic dentistry at Dr. Johnson clinic',
+            display_order: 2,
+            is_featured: true
+          },
+          {
+            id: '3',
+            patient_name: 'David Brown',
+            patient_image_url: null,
+            video_url: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
+            video_thumbnail_url: null,
+            treatment_type: 'Orthodontics',
+            title: 'Straightening My Teeth',
+            description: 'The orthodontic treatment process and amazing results',
+            display_order: 3,
+            is_featured: true
+          }
+        ];
+        setVideoTestimonials(videoMockData.sort((a, b) => a.display_order - b.display_order));
       } catch (error) {
         console.error('Error loading testimonials:', error);
       } finally {
@@ -92,6 +149,14 @@ export const Testimonials = () => {
 
   const prevTestimonial = () => {
     setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
+  };
+
+  const nextVideoTestimonial = () => {
+    setCurrentVideoIndex((prev) => (prev + 1) % videoTestimonials.length);
+  };
+
+  const prevVideoTestimonial = () => {
+    setCurrentVideoIndex((prev) => (prev - 1 + videoTestimonials.length) % videoTestimonials.length);
   };
 
   useEffect(() => {
@@ -151,8 +216,16 @@ export const Testimonials = () => {
           </p>
         </div>
 
-        {/* Featured Testimonial Carousel */}
-        {testimonials.length > 0 && (
+        {/* Testimonials Tabs */}
+        <Tabs defaultValue="text" className="w-full">
+          <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsTrigger value="text">Text Reviews</TabsTrigger>
+            <TabsTrigger value="video">Video Testimonials</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="text" className="space-y-16">
+            {/* Featured Text Testimonial Carousel */}
+            {testimonials.length > 0 && (
           <div className="relative mb-16 fade-in-up">
             <div className="medical-card bg-card/80 backdrop-blur-sm border border-primary/20 max-w-4xl mx-auto">
               <div className="relative">
@@ -219,13 +292,13 @@ export const Testimonials = () => {
                   </Button>
                 </div>
               </div>
+              </div>
             </div>
-          </div>
-        )}
+          )}
 
-        {/* Testimonials Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-          {testimonials.slice(0, 3).map((testimonial, index) => (
+          {/* Text Testimonials Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {testimonials.slice(0, 3).map((testimonial, index) => (
             <div 
               key={testimonial.id} 
               className="medical-card medical-card-hover fade-in-up"
@@ -257,10 +330,148 @@ export const Testimonials = () => {
                     {testimonial.treatment_type}
                   </Badge>
                 </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </TabsContent>
+
+        <TabsContent value="video" className="space-y-16">
+          {/* Featured Video Testimonial */}
+          {videoTestimonials.length > 0 && (
+            <div className="relative fade-in-up">
+              <div className="medical-card bg-card/80 backdrop-blur-sm border border-primary/20 max-w-4xl mx-auto">
+                <div className="grid md:grid-cols-2 gap-8 items-center">
+                  {/* Video */}
+                  <div className="relative">
+                    <div className="aspect-video rounded-lg overflow-hidden">
+                      <iframe
+                        src={videoTestimonials[currentVideoIndex].video_url}
+                        title={videoTestimonials[currentVideoIndex].title}
+                        className="w-full h-full"
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      />
+                    </div>
+                  </div>
+
+                  {/* Content */}
+                  <div className="space-y-6">
+                    <div>
+                      <h3 className="text-2xl font-bold mb-2">
+                        {videoTestimonials[currentVideoIndex].title}
+                      </h3>
+                      <p className="text-muted-foreground">
+                        {videoTestimonials[currentVideoIndex].description}
+                      </p>
+                    </div>
+
+                    {/* Patient Info */}
+                    <div className="flex items-center gap-4">
+                      <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center font-semibold">
+                        {getInitials(videoTestimonials[currentVideoIndex].patient_name)}
+                      </div>
+                      <div>
+                        <div className="font-semibold text-foreground">
+                          {videoTestimonials[currentVideoIndex].patient_name}
+                        </div>
+                        <Badge variant="secondary" className="text-xs">
+                          {videoTestimonials[currentVideoIndex].treatment_type}
+                        </Badge>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Video Navigation */}
+                <div className="flex justify-between items-center mt-8">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={prevVideoTestimonial}
+                    className="rounded-full"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </Button>
+
+                  {/* Video Dots Indicator */}
+                  <div className="flex gap-2">
+                    {videoTestimonials.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentVideoIndex(index)}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          index === currentVideoIndex ? 'bg-primary w-8' : 'bg-muted'
+                        }`}
+                      />
+                    ))}
+                  </div>
+
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={nextVideoTestimonial}
+                    className="rounded-full"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </Button>
+                </div>
               </div>
             </div>
-          ))}
-        </div>
+          )}
+
+          {/* Video Testimonials Grid */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {videoTestimonials.slice(0, 6).map((video, index) => (
+              <div 
+                key={video.id} 
+                className="medical-card medical-card-hover fade-in-up cursor-pointer group"
+                style={{ animationDelay: `${index * 150}ms` }}
+                onClick={() => setCurrentVideoIndex(index)}
+              >
+                <div className="space-y-4">
+                  {/* Video Thumbnail */}
+                  <div className="relative aspect-video rounded-lg overflow-hidden bg-muted">
+                    <iframe
+                      src={video.video_url}
+                      title={video.title}
+                      className="w-full h-full"
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                    <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors flex items-center justify-center">
+                      <Play className="w-12 h-12 text-white opacity-80 group-hover:opacity-100 transition-opacity" />
+                    </div>
+                  </div>
+
+                  {/* Video Info */}
+                  <div className="space-y-2">
+                    <h4 className="font-semibold text-sm line-clamp-2">{video.title}</h4>
+                    <p className="text-xs text-muted-foreground line-clamp-2">{video.description}</p>
+                  </div>
+
+                  {/* Patient */}
+                  <div className="flex items-center justify-between pt-2 border-t border-border">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-semibold text-xs">
+                        {getInitials(video.patient_name)}
+                      </div>
+                      <div>
+                        <div className="font-semibold text-xs">{video.patient_name}</div>
+                      </div>
+                    </div>
+                    <Badge variant="outline" className="text-xs">
+                      {video.treatment_type}
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </TabsContent>
+      </Tabs>
 
         {/* Stats */}
         <div className="medical-card bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/20 fade-in-up">

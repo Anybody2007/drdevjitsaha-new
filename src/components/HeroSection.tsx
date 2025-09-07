@@ -84,7 +84,7 @@ export const HeroSection = () => {
                   <Calendar className="w-5 h-5 mr-2 group-hover:scale-110 transition-transform" />
                   {heroContent?.cta_text}
                 </Button>
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+                <Button size="lg" variant="medical" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-medium)] border-2 border-primary">
                   <Phone className="w-5 h-5 mr-2" />
                   Call Now
                 </Button>
