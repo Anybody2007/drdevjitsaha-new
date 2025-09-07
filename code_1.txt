@@ -1,0 +1,2 @@
+Supabase query failed: Failed to run sql query: ERROR:  42710: policy "Allow public read access to care info" for table "care_info" already exists
+

@@ -1,64 +1,14 @@
-import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle, CreditCard, Shield, Heart, Clock, DollarSign } from 'lucide-react';
+import { CareInfo as CareInfoType } from '@/integrations/supabase/api';
 
-interface CareInfo {
-  id: string;
-  title: string;
-  description: string;
-  features: string[];
-  insurance_accepted: string[];
-  payment_options: string[];
+interface AffordableCareProps {
+  careInfo: CareInfoType | null;
 }
 
-export const AffordableCare = () => {
-  const [careInfo, setCareInfo] = useState<CareInfo | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadCareInfo = async () => {
-      try {
-        // This will be replaced with actual Supabase call
-        const mockData: CareInfo = {
-          id: '1',
-          title: 'Affordable Quality Care',
-          description: 'We believe everyone deserves access to excellent dental care. Our practice offers flexible payment options and works with most insurance providers.',
-          features: [
-            'Flexible Payment Plans',
-            'Insurance Coverage Assistance',
-            'Transparent Pricing',
-            'No Hidden Fees',
-            'Emergency Care Available'
-          ],
-          insurance_accepted: [
-            'Delta Dental',
-            'Blue Cross Blue Shield',
-            'Aetna',
-            'Cigna',
-            'MetLife',
-            'Most PPO Plans'
-          ],
-          payment_options: [
-            'Cash',
-            'Credit Cards',
-            'CareCredit',
-            'Monthly Payment Plans',
-            'HSA/FSA Accepted'
-          ]
-        };
-        setCareInfo(mockData);
-      } catch (error) {
-        console.error('Error loading care info:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadCareInfo();
-  }, []);
-
-  if (loading) {
+export const AffordableCare = ({ careInfo }: AffordableCareProps) => {
+  if (!careInfo) {
     return (
       <section className="section-padding bg-gradient-to-br from-secondary/30 to-accent/10">
         <div className="container-padding">
@@ -91,10 +41,10 @@ export const AffordableCare = () => {
       <div className="container-padding">
         <div className="text-center mb-16 fade-in-up">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            <span className="gradient-text">{careInfo?.title}</span>
+            <span className="gradient-text">{careInfo.title}</span>
           </h2>
           <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            {careInfo?.description}
+            {careInfo.description}
           </p>
         </div>
 
@@ -110,7 +60,7 @@ export const AffordableCare = () => {
               </div>
               
               <div className="space-y-3">
-                {careInfo?.features.map((feature, index) => (
+                {careInfo.features?.map((feature, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <CheckCircle className="w-5 h-5 text-accent flex-shrink-0" />
                     <span className="text-muted-foreground">{feature}</span>
@@ -131,7 +81,7 @@ export const AffordableCare = () => {
               </div>
               
               <div className="space-y-3">
-                {careInfo?.insurance_accepted.map((insurance, index) => (
+                {careInfo.insurance_accepted?.map((insurance, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <CheckCircle className="w-5 h-5 text-primary flex-shrink-0" />
                     <span className="text-muted-foreground">{insurance}</span>
@@ -152,7 +102,7 @@ export const AffordableCare = () => {
               </div>
               
               <div className="space-y-3">
-                {careInfo?.payment_options.map((option, index) => (
+                {careInfo.payment_options?.map((option, index) => (
                   <div key={index} className="flex items-center gap-3">
                     <CheckCircle className="w-5 h-5 text-accent flex-shrink-0" />
                     <span className="text-muted-foreground">{option}</span>

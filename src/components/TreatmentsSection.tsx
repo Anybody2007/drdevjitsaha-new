@@ -1,194 +1,138 @@
-import { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Stethoscope, Sparkles, Wrench, Zap, Clock, DollarSign } from 'lucide-react';
+import React from "react";
+import { Treatment, TreatmentImage } from "@/integrations/supabase/api";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card";
+import { Clock, CircleDollarSign } from "lucide-react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
+import Autoplay from "embla-carousel-autoplay";
+import * as LucideIcons from 'lucide-react'; // Import all Lucide icons
 
-interface Treatment {
-  id: string;
-  name: string;
-  description: string;
-  icon: string;
-  price_range: string;
-  duration: string;
-  display_order: number;
+interface TreatmentsSectionProps {
+  treatments: Treatment[];
+  treatmentImages: TreatmentImage[];
 }
 
-const iconMap = {
-  Stethoscope,
-  Sparkles,
-  Wrench,
-  Zap,
-  Clock,
-  DollarSign
+// Map Lucide icon names to their components
+const IconMap: { [key: string]: React.ElementType } = {
+  Tooth: LucideIcons.Tooth,
+  Syringe: LucideIcons.Syringe,
+  XRay: LucideIcons.XRay,
+  Smile: LucideIcons.Smile,
+  Stethoscope: LucideIcons.Stethoscope,
+  Heart: LucideIcons.Heart,
+  Calendar: LucideIcons.Calendar,
+  DollarSign: LucideIcons.DollarSign,
+  Shield: LucideIcons.Shield,
+  // Add more icons here as needed for your treatments
 };
 
-export const TreatmentsSection = () => {
-  const [treatments, setTreatments] = useState<Treatment[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const loadTreatments = async () => {
-      try {
-        // This will be replaced with actual Supabase call
-        const mockData: Treatment[] = [
-          {
-            id: '1',
-            name: 'General Dentistry',
-            description: 'Comprehensive oral health care including cleanings, fillings, and preventive treatments.',
-            icon: 'Stethoscope',
-            price_range: '$50 - $300',
-            duration: '30-60 minutes',
-            display_order: 1
-          },
-          {
-            id: '2',
-            name: 'Cosmetic Dentistry',
-            description: 'Enhance your smile with veneers, whitening, and aesthetic treatments.',
-            icon: 'Sparkles',
-            price_range: '$200 - $2000',
-            duration: '60-120 minutes',
-            display_order: 2
-          },
-          {
-            id: '3',
-            name: 'Dental Implants',
-            description: 'Permanent tooth replacement solutions with natural-looking results.',
-            icon: 'Wrench',
-            price_range: '$1500 - $4000',
-            duration: '90-180 minutes',
-            display_order: 3
-          },
-          {
-            id: '4',
-            name: 'Laser Dentistry',
-            description: 'Advanced laser treatments for precise, comfortable procedures.',
-            icon: 'Zap',
-            price_range: '$100 - $800',
-            duration: '30-90 minutes',
-            display_order: 4
-          }
-        ];
-        setTreatments(mockData.sort((a, b) => a.display_order - b.display_order));
-      } catch (error) {
-        console.error('Error loading treatments:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadTreatments();
-  }, []);
-
-  if (loading) {
-    return (
-      <section className="section-padding">
-        <div className="container-padding">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[...Array(4)].map((_, i) => (
-              <div key={i} className="animate-pulse">
-                <div className="medical-card h-64 space-y-4">
-                  <div className="h-12 w-12 bg-muted rounded-lg"></div>
-                  <div className="h-6 bg-muted rounded w-3/4"></div>
-                  <div className="h-4 bg-muted rounded w-full"></div>
-                  <div className="h-4 bg-muted rounded w-2/3"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
+export const TreatmentsSection = ({ treatments, treatmentImages }: TreatmentsSectionProps) => {
+  const plugin = React.useRef(
+    Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: true })
+  );
 
   return (
-    <section className="section-padding bg-background">
-      <div className="container-padding">
-        <div className="text-center mb-16 fade-in-up">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Our <span className="gradient-text">Treatment Services</span>
+    <section className="relative bg-secondary">
+      {/* Top Wave Divider */}
+      <div className="absolute top-0 left-0 w-full overflow-hidden leading-[0]">
+        <svg
+          className="relative block w-full h-[60px] md:h-[100px]"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M985.66,92.83C906.67,72,823.78,31.74,729.52,27.84C635.26,23.94,558.62,31.58,480.34,50.35C402.06,69.12,324.38,86.34,245.8,9V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+            className="fill-background"
+          ></path>
+        </svg>
+      </div>
+
+      <div className="container-padding text-center space-y-12 section-padding">
+        <div className="space-y-4 max-w-3xl mx-auto">
+          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight gradient-text">
+            Comprehensive Dental Care
           </h2>
-          <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-            Comprehensive dental care with the latest technology and techniques. 
-            Dr. Johnson's expertise spans multiple specializations to meet all your oral health needs.
+          <p className="text-lg text-muted-foreground">
+            From routine check-ups to advanced cosmetic procedures, we offer a wide range of services to keep your smile healthy and beautiful.
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {treatments.map((treatment, index) => {
-            const IconComponent = iconMap[treatment.icon as keyof typeof iconMap] || Stethoscope;
-            
-            return (
-              <div 
-                key={treatment.id} 
-                className="medical-card medical-card-hover fade-in-up group"
-                style={{ animationDelay: `${index * 150}ms` }}
-              >
-                <div className="space-y-4">
-                  {/* Icon */}
-                  <div className="flex items-center justify-center w-16 h-16 rounded-xl bg-primary/10 text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-all duration-300">
-                    <IconComponent className="w-8 h-8" />
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-foreground">
-                    {treatment.name}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-muted-foreground leading-relaxed">
-                    {treatment.description}
-                  </p>
-
-                  {/* Details */}
-                  <div className="space-y-3 pt-4">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Duration:</span>
-                      <Badge variant="secondary" className="text-xs">
-                        {treatment.duration}
-                      </Badge>
+        {/* Image Slideshow */}
+        {treatmentImages && treatmentImages.length > 0 && (
+          <div className="w-full max-w-5xl mx-auto">
+            <Carousel
+              plugins={[plugin.current]}
+              opts={{
+                align: "start",
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent>
+                {treatmentImages.map((image) => (
+                  <CarouselItem key={image.id} className="md:basis-1/2 lg:basis-1/3">
+                    <div className="p-1">
+                      <Card className="overflow-hidden border-2 border-transparent hover:border-primary transition-all duration-300 group">
+                        <CardContent className="p-0 flex aspect-video items-center justify-center relative">
+                          <img
+                            src={image.image_url}
+                            alt={image.alt_text || 'Dental treatment image'}
+                            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                          />
+                        </CardContent>
+                      </Card>
                     </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Price Range:</span>
-                      <span className="text-sm font-semibold text-primary">
-                        {treatment.price_range}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* CTA */}
-                  <div className="pt-4">
-                    <Button 
-                      variant="outline" 
-                      className="w-full group-hover:bg-primary group-hover:text-primary-foreground group-hover:border-primary transition-all duration-300"
-                    >
-                      Learn More
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Call to Action */}
-        <div className="text-center mt-16 fade-in-up">
-          <div className="medical-card bg-gradient-to-r from-primary/5 to-accent/5 border border-primary/20">
-            <div className="space-y-4">
-              <h3 className="text-2xl font-bold">Ready to Transform Your Smile?</h3>
-              <p className="text-muted-foreground">
-                Schedule a consultation to discuss which treatment is right for you
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" variant="medical">
-                  Schedule Consultation
-                </Button>
-                <Button size="lg" variant="outline">
-                  View All Services
-                </Button>
-              </div>
-            </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+              <CarouselPrevious className="hidden sm:flex" />
+              <CarouselNext className="hidden sm:flex" />
+            </Carousel>
           </div>
+        )}
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pt-12">
+          {treatments.map((treatment) => (
+            <Card key={treatment.id} className="medical-card medical-card-hover text-left flex flex-col">
+              <CardHeader className="flex flex-row items-center gap-4">
+                {treatment.icon_name && IconMap[treatment.icon_name] && (
+                  <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
+                    {React.createElement(IconMap[treatment.icon_name], { className: "w-6 h-6" })}
+                  </div>
+                )}
+                <CardTitle className="text-2xl text-primary">{treatment.name}</CardTitle>
+              </CardHeader>
+              <CardContent className="flex-grow">
+                <p className="text-muted-foreground">{treatment.description}</p>
+              </CardContent>
+              <CardFooter className="flex justify-between text-sm text-muted-foreground border-t pt-4 mt-4">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4 text-primary" />
+                  <span>{treatment.duration}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <CircleDollarSign className="w-4 h-4 text-primary" />
+                  <span>{treatment.price_range}</span>
+                </div>
+              </CardFooter>
+            </Card>
+          ))}
         </div>
+      </div>
+
+      {/* Bottom Wave Divider */}
+      <div className="absolute bottom-0 left-0 w-full overflow-hidden leading-[0] transform rotate-180">
+        <svg
+          className="relative block w-full h-[60px] md:h-[100px]"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 1200 120"
+          preserveAspectRatio="none"
+        >
+          <path
+            d="M985.66,92.83C906.67,72,823.78,31.74,729.52,27.84C635.26,23.94,558.62,31.58,480.34,50.35C402.06,69.12,324.38,86.34,245.8,9V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z"
+            className="fill-background"
+          ></path>
+        </svg>
       </div>
     </section>
   );
