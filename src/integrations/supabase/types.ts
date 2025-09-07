@@ -204,8 +204,11 @@ export type Database = {
           patient_name: string
           rating: number | null
           review_text: string
+          testimonial_type: string | null
           treatment_type: string | null
           updated_at: string
+          video_thumbnail_url: string | null
+          video_url: string | null
         }
         Insert: {
           created_at?: string
@@ -216,8 +219,11 @@ export type Database = {
           patient_name: string
           rating?: number | null
           review_text: string
+          testimonial_type?: string | null
           treatment_type?: string | null
           updated_at?: string
+          video_thumbnail_url?: string | null
+          video_url?: string | null
         }
         Update: {
           created_at?: string
@@ -228,8 +234,11 @@ export type Database = {
           patient_name?: string
           rating?: number | null
           review_text?: string
+          testimonial_type?: string | null
           treatment_type?: string | null
           updated_at?: string
+          video_thumbnail_url?: string | null
+          video_url?: string | null
         }
         Relationships: []
       }
@@ -266,6 +275,51 @@ export type Database = {
           name?: string
           price_range?: string | null
           updated_at?: string
+        }
+        Relationships: []
+      }
+      video_testimonials: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          id: string
+          is_featured: boolean | null
+          patient_image_url: string | null
+          patient_name: string
+          title: string | null
+          treatment_type: string | null
+          updated_at: string | null
+          video_thumbnail_url: string | null
+          video_url: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          is_featured?: boolean | null
+          patient_image_url?: string | null
+          patient_name: string
+          title?: string | null
+          treatment_type?: string | null
+          updated_at?: string | null
+          video_thumbnail_url?: string | null
+          video_url: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          is_featured?: boolean | null
+          patient_image_url?: string | null
+          patient_name?: string
+          title?: string | null
+          treatment_type?: string | null
+          updated_at?: string | null
+          video_thumbnail_url?: string | null
+          video_url?: string
         }
         Relationships: []
       }
