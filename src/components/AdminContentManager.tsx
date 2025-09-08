@@ -112,7 +112,7 @@ export const AdminContentManager = () => {
   const addListItem = async (type: 'treatment' | 'testimonial' | 'video' | 'image') => {
     try {
       if (type === 'treatment') {
-        await api.addTreatment({ name: 'New Treatment', description: 'A brief description.', display_order: treatments.length + 1, icon_name: 'Tooth' }); // Added default icon_name
+        await api.addTreatment({ name: 'New Treatment', description: 'A brief description.', display_order: treatments.length + 1, icon: 'https://cdn-icons-png.flaticon.com/512/2278/2278147.png' });
       } else if (type === 'testimonial') {
         await api.addTestimonial({ patient_name: 'New Patient', review_text: 'An excellent experience.', rating: 5, display_order: testimonials.length + 1 });
       } else if (type === 'video') {
@@ -347,16 +347,13 @@ export const AdminContentManager = () => {
                           <Textarea placeholder="Description" value={treatment.description || ''} onChange={(e) => setTreatments(treatments.map(t => t.id === treatment.id ? { ...t, description: e.target.value } : t))} rows={2} />
                         </div>
                         <div>
-                          <label className="text-sm font-medium flex items-center gap-1">
-                            Icon Name (Lucide)
-                            <a href="https://lucide.dev/icons/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
-                              <Info className="w-3 h-3" />
-                            </a>
+                          <label className="text-sm font-medium">
+                            Icon URL
                           </label>
                           <Input
-                            placeholder="e.g., Tooth, Syringe"
-                            value={treatment.icon_name || ''}
-                            onChange={(e) => setTreatments(treatments.map(t => t.id === treatment.id ? { ...t, icon_name: e.target.value } : t))}
+                            placeholder="e.g., https://example.com/icon.png"
+                            value={treatment.icon || ''}
+                            onChange={(e) => setTreatments(treatments.map(t => t.id === treatment.id ? { ...t, icon: e.target.value } : t))}
                           />
                         </div>
                         <div className="flex items-end justify-end">

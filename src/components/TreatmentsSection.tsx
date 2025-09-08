@@ -4,26 +4,11 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "./ui/card"
 import { Clock, CircleDollarSign } from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "./ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import * as LucideIcons from 'lucide-react'; // Import all Lucide icons
 
 interface TreatmentsSectionProps {
   treatments: Treatment[];
   treatmentImages: TreatmentImage[];
 }
-
-// Map Lucide icon names to their components
-const IconMap: { [key: string]: React.ElementType } = {
-  Tooth: LucideIcons.Tooth,
-  Syringe: LucideIcons.Syringe,
-  XRay: LucideIcons.XRay,
-  Smile: LucideIcons.Smile,
-  Stethoscope: LucideIcons.Stethoscope,
-  Heart: LucideIcons.Heart,
-  Calendar: LucideIcons.Calendar,
-  DollarSign: LucideIcons.DollarSign,
-  Shield: LucideIcons.Shield,
-  // Add more icons here as needed for your treatments
-};
 
 export const TreatmentsSection = ({ treatments, treatmentImages }: TreatmentsSectionProps) => {
   const plugin = React.useRef(
@@ -94,16 +79,23 @@ export const TreatmentsSection = ({ treatments, treatmentImages }: TreatmentsSec
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 pt-12">
           {treatments.map((treatment) => (
             <Card key={treatment.id} className="medical-card medical-card-hover text-left flex flex-col">
-              <CardHeader className="flex flex-row items-center gap-4">
-                {treatment.icon_name && IconMap[treatment.icon_name] && (
-                  <div className="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center flex-shrink-0">
-                    {React.createElement(IconMap[treatment.icon_name], { className: "w-6 h-6" })}
+              <CardHeader className="text-center pb-4">
+                {treatment.icon && (
+                  <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-gradient-to-br from-primary/10 to-primary/5 border-2 border-primary/20 flex items-center justify-center flex-shrink-0 shadow-lg">
+                    <img 
+                      src={treatment.icon} 
+                      alt={`${treatment.name} icon`}
+                      className="w-12 h-12 object-contain"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
                   </div>
                 )}
-                <CardTitle className="text-2xl text-primary">{treatment.name}</CardTitle>
+                <CardTitle className="text-2xl text-primary font-bold">{treatment.name}</CardTitle>
               </CardHeader>
-              <CardContent className="flex-grow">
-                <p className="text-muted-foreground">{treatment.description}</p>
+              <CardContent className="flex-grow text-center">
+                <p className="text-muted-foreground leading-relaxed">{treatment.description}</p>
               </CardContent>
               <CardFooter className="flex justify-between text-sm text-muted-foreground border-t pt-4 mt-4">
                 <div className="flex items-center gap-2">

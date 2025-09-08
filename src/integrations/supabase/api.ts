@@ -13,7 +13,7 @@ export type TreatmentImage = Tables<'treatment_images'>;
 // --- Generic Helpers ---
 
 const getSingleton = async <T>(tableName: string): Promise<T | null> => {
-  const { data, error } = await supabase.from(tableName).select('*').limit(1).single();
+  const { data, error } = await supabase.from(tableName as any).select('*').limit(1).single();
   if (error && error.code !== 'PGRST116') { // Ignore error if no rows are found
     console.error(`Error fetching ${tableName}:`, error);
     throw error;
@@ -24,17 +24,17 @@ const getSingleton = async <T>(tableName: string): Promise<T | null> => {
 const updateSingleton = async <T extends { id: string }>(tableName: string, content: Partial<T>) => {
   const existing = await getSingleton<T>(tableName);
   if (!existing) {
-    const { data, error } = await supabase.from(tableName).insert(content as any).select().single();
+    const { data, error } = await supabase.from(tableName as any).insert(content as any).select().single();
     if (error) throw error;
     return data;
   }
-  const { data, error } = await supabase.from(tableName).update(content).eq('id', existing.id).select().single();
+  const { data, error } = await supabase.from(tableName as any).update(content).eq('id', existing.id).select().single();
   if (error) throw error;
   return data;
 };
 
 const getList = async <T>(tableName: string, orderBy: keyof T = 'display_order' as keyof T) => {
-  const { data, error } = await supabase.from(tableName).select('*').order(orderBy as string, { ascending: true });
+  const { data, error } = await supabase.from(tableName as any).select('*').order(orderBy as string, { ascending: true });
   if (error) {
     console.error(`Error fetching ${tableName}:`, error);
     throw error;
@@ -43,19 +43,19 @@ const getList = async <T>(tableName: string, orderBy: keyof T = 'display_order' 
 };
 
 const addItem = async <T>(tableName: string, item: TablesInsert<any>) => {
-  const { data, error } = await supabase.from(tableName).insert(item).select().single();
+  const { data, error } = await supabase.from(tableName as any).insert(item).select().single();
   if (error) throw error;
   return data as T;
 };
 
 const updateItem = async <T>(tableName: string, id: string, item: TablesUpdate<any>) => {
-  const { data, error } = await supabase.from(tableName).update(item).eq('id', id).select().single();
+  const { data, error } = await supabase.from(tableName as any).update(item).eq('id', id).select().single();
   if (error) throw error;
   return data as T;
 };
 
 const deleteItem = async (tableName: string, id: string) => {
-  const { error } = await supabase.from(tableName).delete().eq('id', id);
+  const { error } = await supabase.from(tableName as any).delete().eq('id', id);
   if (error) throw error;
 };
 
