@@ -4,11 +4,8 @@ import * as api from '@/integrations/supabase/api';
 type PageContent = {
   hero: api.HeroContent | null;
   doctor: api.DoctorInfo | null;
-  treatments: api.Treatment[];
+  services: api.Service[];
   testimonials: api.Testimonial[];
-  videoTestimonials: api.VideoTestimonial[];
-  careInfo: api.CareInfo | null;
-  treatmentImages: api.TreatmentImage[];
 };
 
 export const usePageContent = () => {
