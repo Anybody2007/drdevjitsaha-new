@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { Lock, Mail, Loader2 } from 'lucide-react';
-import { AdminContentManager } from '@/components/AdminContentManager';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 
@@ -110,7 +109,17 @@ const Admin = () => {
     );
   }
 
-  return <AdminContentManager />;
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
+      <Card className="w-full max-w-2xl p-8">
+        <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
+        <p className="text-muted-foreground mb-4">Content management coming soon...</p>
+        <Button onClick={() => supabase.auth.signOut()} variant="outline">
+          Logout
+        </Button>
+      </Card>
+    </div>
+  );
 };
 
 export default Admin;

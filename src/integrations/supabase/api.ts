@@ -2,13 +2,10 @@ import { supabase } from './client';
 import { Tables, TablesInsert, TablesUpdate } from './types';
 
 // --- Type Exports ---
-export type HeroContent = Tables<'hero_content'>;
-export type DoctorInfo = Tables<'doctor_info'>;
-export type Treatment = Tables<'treatments'>;
+export type HeroContent = Tables<'hero_section'>;
+export type DoctorInfo = Tables<'doctor_profiles'>;
+export type Service = Tables<'services'>;
 export type Testimonial = Tables<'testimonials'>;
-export type VideoTestimonial = Tables<'video_testimonials'>;
-export type CareInfo = Tables<'care_info'>;
-export type TreatmentImage = Tables<'treatment_images'>;
 
 // --- Generic Helpers ---
 
@@ -61,23 +58,19 @@ const deleteItem = async (tableName: string, id: string) => {
 
 // --- API Exports ---
 
-// Hero Content
-export const getHeroContent = () => getSingleton<HeroContent>('hero_content');
-export const updateHeroContent = (content: Partial<HeroContent>) => updateSingleton('hero_content', content);
+// Hero Section
+export const getHeroContent = () => getSingleton<HeroContent>('hero_section');
+export const updateHeroContent = (content: Partial<HeroContent>) => updateSingleton('hero_section', content);
 
-// Doctor Info
-export const getDoctorInfo = () => getSingleton<DoctorInfo>('doctor_info');
-export const updateDoctorInfo = (content: Partial<DoctorInfo>) => updateSingleton('doctor_info', content);
+// Doctor Profiles
+export const getDoctorInfo = () => getSingleton<DoctorInfo>('doctor_profiles');
+export const updateDoctorInfo = (content: Partial<DoctorInfo>) => updateSingleton('doctor_profiles', content);
 
-// Care Info
-export const getCareInfo = () => getSingleton<CareInfo>('care_info');
-export const updateCareInfo = (content: Partial<CareInfo>) => updateSingleton('care_info', content);
-
-// Treatments
-export const getTreatments = () => getList<Treatment>('treatments');
-export const addTreatment = (item: TablesInsert<'treatments'>) => addItem<Treatment>('treatments', item);
-export const updateTreatment = (id: string, item: TablesUpdate<'treatments'>) => updateItem<Treatment>('treatments', id, item);
-export const deleteTreatment = (id: string) => deleteItem('treatments', id);
+// Services
+export const getServices = () => getList<Service>('services');
+export const addService = (item: TablesInsert<'services'>) => addItem<Service>('services', item);
+export const updateService = (id: string, item: TablesUpdate<'services'>) => updateItem<Service>('services', id, item);
+export const deleteService = (id: string) => deleteItem('services', id);
 
 // Testimonials
 export const getTestimonials = () => getList<Testimonial>('testimonials');
@@ -85,28 +78,13 @@ export const addTestimonial = (item: TablesInsert<'testimonials'>) => addItem<Te
 export const updateTestimonial = (id: string, item: TablesUpdate<'testimonials'>) => updateItem<Testimonial>('testimonials', id, item);
 export const deleteTestimonial = (id: string) => deleteItem('testimonials', id);
 
-// Video Testimonials
-export const getVideoTestimonials = () => getList<VideoTestimonial>('video_testimonials');
-export const addVideoTestimonial = (item: TablesInsert<'video_testimonials'>) => addItem<VideoTestimonial>('video_testimonials', item);
-export const updateVideoTestimonial = (id: string, item: TablesUpdate<'video_testimonials'>) => updateItem<VideoTestimonial>('video_testimonials', id, item);
-export const deleteVideoTestimonial = (id: string) => deleteItem('video_testimonials', id);
-
-// Treatment Images
-export const getTreatmentImages = () => getList<TreatmentImage>('treatment_images');
-export const addTreatmentImage = (item: TablesInsert<'treatment_images'>) => addItem<TreatmentImage>('treatment_images', item);
-export const updateTreatmentImage = (id: string, item: TablesUpdate<'treatment_images'>) => updateItem<TreatmentImage>('treatment_images', id, item);
-export const deleteTreatmentImage = (id: string) => deleteItem('treatment_images', id);
-
-// --- Combined fetch for frontend ---
+// Combined content fetch
 export const getPageContent = async () => {
-    const [hero, doctor, treatments, testimonials, videoTestimonials, careInfo, treatmentImages] = await Promise.all([
-        getHeroContent(),
-        getDoctorInfo(),
-        getTreatments(),
-        getTestimonials(),
-        getVideoTestimonials(),
-        getCareInfo(),
-        getTreatmentImages(),
-    ]);
-    return { hero, doctor, treatments, testimonials, videoTestimonials, careInfo, treatmentImages };
-}
+  const [hero, doctor, services, testimonials] = await Promise.all([
+    getHeroContent(),
+    getDoctorInfo(),
+    getServices(),
+    getTestimonials(),
+  ]);
+  return { hero, doctor, services, testimonials };
+};

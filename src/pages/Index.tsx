@@ -1,8 +1,6 @@
 import { HeroSection } from '@/components/HeroSection';
 import { AboutDoctor } from '@/components/AboutDoctor';
-import { TreatmentsSection } from '@/components/TreatmentsSection';
-import { AffordableCare } from '@/components/AffordableCare';
-import { QualityCare } from '@/components/QualityCare';
+import { ServicesSection } from '@/components/ServicesSection';
 import { Testimonials } from '@/components/Testimonials';
 import { usePageContent } from '@/hooks/usePageContent';
 import { Loader2 } from 'lucide-react';
@@ -32,20 +30,8 @@ const Index = () => {
     <main className="min-h-screen">
       {content.hero && <HeroSection content={content.hero} />}
       {content.doctor && <AboutDoctor content={content.doctor} />}
-      {content.treatments && content.treatmentImages && (
-        <TreatmentsSection 
-          treatments={content.treatments} 
-          treatmentImages={content.treatmentImages} 
-        />
-      )}
-      {content.careInfo && <AffordableCare careInfo={content.careInfo} />}
-      <QualityCare />
-      {content.testimonials && content.videoTestimonials && (
-        <Testimonials 
-          testimonials={content.testimonials} 
-          videoTestimonials={content.videoTestimonials} 
-        />
-      )}
+      {content.services && <ServicesSection services={content.services} />}
+      {content.testimonials && <Testimonials testimonials={content.testimonials} />}
     </main>
   );
 };
