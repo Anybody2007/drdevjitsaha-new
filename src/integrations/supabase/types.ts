@@ -14,336 +14,539 @@ export type Database = {
   }
   public: {
     Tables: {
-      admin_sessions: {
+      appointments: {
         Row: {
+          appointment_date: string
           created_at: string
-          failed_attempts: number | null
+          doctor_id: string | null
+          email: string
+          first_name: string
           id: string
-          ip_address: unknown
-          last_attempt: string | null
-          locked_until: string | null
+          last_name: string
+          message: string | null
+          phone: string
+          status: string | null
+          subscribe_newsletter: boolean | null
+          updated_at: string
         }
         Insert: {
+          appointment_date: string
           created_at?: string
-          failed_attempts?: number | null
+          doctor_id?: string | null
+          email: string
+          first_name: string
           id?: string
-          ip_address: unknown
-          last_attempt?: string | null
-          locked_until?: string | null
+          last_name: string
+          message?: string | null
+          phone: string
+          status?: string | null
+          subscribe_newsletter?: boolean | null
+          updated_at?: string
         }
         Update: {
+          appointment_date?: string
           created_at?: string
-          failed_attempts?: number | null
+          doctor_id?: string | null
+          email?: string
+          first_name?: string
           id?: string
-          ip_address?: unknown
-          last_attempt?: string | null
-          locked_until?: string | null
+          last_name?: string
+          message?: string | null
+          phone?: string
+          status?: string | null
+          subscribe_newsletter?: boolean | null
+          updated_at?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "appointments_doctor_id_fkey"
+            columns: ["doctor_id"]
+            isOneToOne: false
+            referencedRelation: "doctor_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
       }
-      care_info: {
+      blog_posts: {
         Row: {
+          content: string
           created_at: string
-          description: string | null
-          features: string[] | null
+          featured_image_url: string | null
           id: string
-          insurance_accepted: string[] | null
-          payment_options: string[] | null
+          is_published: boolean | null
+          meta_description: string | null
+          meta_title: string | null
+          published_at: string | null
+          slug: string
           title: string
           updated_at: string
         }
         Insert: {
+          content: string
           created_at?: string
-          description?: string | null
-          features?: string[] | null
+          featured_image_url?: string | null
           id?: string
-          insurance_accepted?: string[] | null
-          payment_options?: string[] | null
+          is_published?: boolean | null
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          slug: string
           title: string
           updated_at?: string
         }
         Update: {
+          content?: string
           created_at?: string
-          description?: string | null
-          features?: string[] | null
+          featured_image_url?: string | null
           id?: string
-          insurance_accepted?: string[] | null
-          payment_options?: string[] | null
+          is_published?: boolean | null
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          slug?: string
           title?: string
           updated_at?: string
         }
         Relationships: []
       }
-      content: {
-        Row: {
-          data: Json
-          id: string
-          updated_at: string | null
-        }
-        Insert: {
-          data: Json
-          id: string
-          updated_at?: string | null
-        }
-        Update: {
-          data?: Json
-          id?: string
-          updated_at?: string | null
-        }
-        Relationships: []
-      }
-      doctor_info: {
+      doctor_profiles: {
         Row: {
           bio: string | null
           created_at: string
-          education: string[] | null
+          display_order: number | null
           id: string
+          image_url: string | null
+          is_active: boolean | null
           name: string
-          profile_image_url: string | null
-          specializations: string[] | null
-          title: string | null
+          specialties: string[] | null
+          title: string
           updated_at: string
-          years_experience: number | null
         }
         Insert: {
           bio?: string | null
           created_at?: string
-          education?: string[] | null
+          display_order?: number | null
           id?: string
+          image_url?: string | null
+          is_active?: boolean | null
           name: string
-          profile_image_url?: string | null
-          specializations?: string[] | null
-          title?: string | null
+          specialties?: string[] | null
+          title: string
           updated_at?: string
-          years_experience?: number | null
         }
         Update: {
           bio?: string | null
           created_at?: string
-          education?: string[] | null
+          display_order?: number | null
           id?: string
+          image_url?: string | null
+          is_active?: boolean | null
           name?: string
-          profile_image_url?: string | null
-          specializations?: string[] | null
-          title?: string | null
+          specialties?: string[] | null
+          title?: string
           updated_at?: string
-          years_experience?: number | null
         }
         Relationships: []
       }
-      hero_content: {
+      hero_section: {
         Row: {
+          bottom_text: string | null
+          created_at: string
+          cta_link: string | null
+          cta_text: string | null
+          doctor_image_alt: string | null
+          doctor_image_url: string | null
+          emergency_phone: string | null
+          emergency_text: string | null
+          id: string
+          subtitle: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          bottom_text?: string | null
+          created_at?: string
+          cta_link?: string | null
+          cta_text?: string | null
+          doctor_image_alt?: string | null
+          doctor_image_url?: string | null
+          emergency_phone?: string | null
+          emergency_text?: string | null
+          id?: string
+          subtitle?: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          bottom_text?: string | null
+          created_at?: string
+          cta_link?: string | null
+          cta_text?: string | null
+          doctor_image_alt?: string | null
+          doctor_image_url?: string | null
+          emergency_phone?: string | null
+          emergency_text?: string | null
+          id?: string
+          subtitle?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      introduction_section: {
+        Row: {
+          body: string
+          created_at: string
+          cta1_link: string | null
+          cta1_text: string | null
+          cta2_link: string | null
+          cta2_text: string | null
+          heading: string
+          id: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          created_at?: string
+          cta1_link?: string | null
+          cta1_text?: string | null
+          cta2_link?: string | null
+          cta2_text?: string | null
+          heading?: string
+          id?: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          cta1_link?: string | null
+          cta1_text?: string | null
+          cta2_link?: string | null
+          cta2_text?: string | null
+          heading?: string
+          id?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      location_section: {
+        Row: {
+          accent_color: string | null
+          additional_info: string | null
+          address: string
           background_image_url: string | null
           created_at: string
+          email: string | null
+          google_map_embed_url: string | null
+          hours: Json | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          accent_color?: string | null
+          additional_info?: string | null
+          address?: string
+          background_image_url?: string | null
+          created_at?: string
+          email?: string | null
+          google_map_embed_url?: string | null
+          hours?: Json | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          accent_color?: string | null
+          additional_info?: string | null
+          address?: string
+          background_image_url?: string | null
+          created_at?: string
+          email?: string | null
+          google_map_embed_url?: string | null
+          hours?: Json | null
+          id?: string
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      online_services: {
+        Row: {
+          accent_text: string | null
+          bullets: Json | null
+          created_at: string
+          cta_link: string | null
           cta_text: string | null
-          description: string | null
+          heading: string | null
           id: string
-          subtitle: string | null
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          background_image_url?: string | null
-          created_at?: string
-          cta_text?: string | null
-          description?: string | null
-          id?: string
-          subtitle?: string | null
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          background_image_url?: string | null
-          created_at?: string
-          cta_text?: string | null
-          description?: string | null
-          id?: string
-          subtitle?: string | null
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      quality_points: {
-        Row: {
-          created_at: string
-          description: string | null
-          display_order: number | null
-          icon: string | null
-          id: string
-          title: string
-          updated_at: string
-        }
-        Insert: {
-          created_at?: string
-          description?: string | null
-          display_order?: number | null
-          icon?: string | null
-          id?: string
-          title: string
-          updated_at?: string
-        }
-        Update: {
-          created_at?: string
-          description?: string | null
-          display_order?: number | null
-          icon?: string | null
-          id?: string
-          title?: string
-          updated_at?: string
-        }
-        Relationships: []
-      }
-      testimonials: {
-        Row: {
-          created_at: string
-          display_order: number | null
-          id: string
-          is_featured: boolean | null
-          patient_image_url: string | null
-          patient_name: string
-          rating: number | null
-          review_text: string
-          testimonial_type: string | null
-          treatment_type: string | null
+          pre_heading: string | null
+          secondary_image_url: string | null
+          testimonial_author: string | null
+          testimonial_avatar: string | null
+          testimonial_quote: string | null
+          testimonial_role: string | null
           updated_at: string
           video_thumbnail_url: string | null
           video_url: string | null
         }
         Insert: {
+          accent_text?: string | null
+          bullets?: Json | null
           created_at?: string
-          display_order?: number | null
+          cta_link?: string | null
+          cta_text?: string | null
+          heading?: string | null
           id?: string
-          is_featured?: boolean | null
-          patient_image_url?: string | null
-          patient_name: string
-          rating?: number | null
-          review_text: string
-          testimonial_type?: string | null
-          treatment_type?: string | null
+          pre_heading?: string | null
+          secondary_image_url?: string | null
+          testimonial_author?: string | null
+          testimonial_avatar?: string | null
+          testimonial_quote?: string | null
+          testimonial_role?: string | null
           updated_at?: string
           video_thumbnail_url?: string | null
           video_url?: string | null
         }
         Update: {
+          accent_text?: string | null
+          bullets?: Json | null
           created_at?: string
-          display_order?: number | null
+          cta_link?: string | null
+          cta_text?: string | null
+          heading?: string | null
           id?: string
-          is_featured?: boolean | null
-          patient_image_url?: string | null
-          patient_name?: string
-          rating?: number | null
-          review_text?: string
-          testimonial_type?: string | null
-          treatment_type?: string | null
+          pre_heading?: string | null
+          secondary_image_url?: string | null
+          testimonial_author?: string | null
+          testimonial_avatar?: string | null
+          testimonial_quote?: string | null
+          testimonial_role?: string | null
           updated_at?: string
           video_thumbnail_url?: string | null
           video_url?: string | null
         }
         Relationships: []
       }
-      treatment_images: {
+      otp_verifications: {
         Row: {
-          alt_text: string | null
+          appointment_data: Json
+          created_at: string
+          email: string
+          expires_at: string
+          id: string
+          is_verified: boolean | null
+          otp_code: string
+          updated_at: string
+        }
+        Insert: {
+          appointment_data: Json
+          created_at?: string
+          email: string
+          expires_at: string
+          id?: string
+          is_verified?: boolean | null
+          otp_code: string
+          updated_at?: string
+        }
+        Update: {
+          appointment_data?: Json
+          created_at?: string
+          email?: string
+          expires_at?: string
+          id?: string
+          is_verified?: boolean | null
+          otp_code?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      patient_slideshow: {
+        Row: {
+          caption: string | null
           created_at: string
           display_order: number | null
           id: string
           image_url: string
+          is_active: boolean | null
+          updated_at: string
         }
         Insert: {
-          alt_text?: string | null
+          caption?: string | null
           created_at?: string
           display_order?: number | null
           id?: string
           image_url: string
+          is_active?: boolean | null
+          updated_at?: string
         }
         Update: {
-          alt_text?: string | null
+          caption?: string | null
           created_at?: string
           display_order?: number | null
           id?: string
           image_url?: string
+          is_active?: boolean | null
+          updated_at?: string
         }
         Relationships: []
       }
-      treatments: {
+      priority_section: {
+        Row: {
+          badge_count: string | null
+          badge_label: string | null
+          body: string | null
+          bullets: Json | null
+          created_at: string
+          cta_link: string | null
+          cta_text: string | null
+          heading: string | null
+          id: string
+          image_url: string | null
+          updated_at: string
+        }
+        Insert: {
+          badge_count?: string | null
+          badge_label?: string | null
+          body?: string | null
+          bullets?: Json | null
+          created_at?: string
+          cta_link?: string | null
+          cta_text?: string | null
+          heading?: string | null
+          id?: string
+          image_url?: string | null
+          updated_at?: string
+        }
+        Update: {
+          badge_count?: string | null
+          badge_label?: string | null
+          body?: string | null
+          bullets?: Json | null
+          created_at?: string
+          cta_link?: string | null
+          cta_text?: string | null
+          heading?: string | null
+          id?: string
+          image_url?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      services: {
         Row: {
           created_at: string
-          description: string | null
+          description: string
           display_order: number | null
-          duration: string | null
-          icon: string | null
+          icon_name: string | null
           id: string
-          name: string
-          price_range: string | null
+          image_url: string | null
+          is_active: boolean | null
+          title: string
           updated_at: string
         }
         Insert: {
           created_at?: string
-          description?: string | null
+          description: string
           display_order?: number | null
-          duration?: string | null
-          icon?: string | null
+          icon_name?: string | null
           id?: string
-          name: string
-          price_range?: string | null
+          image_url?: string | null
+          is_active?: boolean | null
+          title: string
           updated_at?: string
         }
         Update: {
           created_at?: string
-          description?: string | null
+          description?: string
           display_order?: number | null
-          duration?: string | null
-          icon?: string | null
+          icon_name?: string | null
           id?: string
-          name?: string
-          price_range?: string | null
+          image_url?: string | null
+          is_active?: boolean | null
+          title?: string
           updated_at?: string
         }
         Relationships: []
       }
-      video_testimonials: {
+      site_settings: {
         Row: {
-          created_at: string | null
-          description: string | null
-          display_order: number | null
+          address: string | null
+          appointment_confirmation_email: string | null
+          clinic_email: string | null
+          created_at: string
+          email: string | null
+          hero_bg_color: string | null
           id: string
-          is_featured: boolean | null
-          patient_image_url: string | null
-          patient_name: string
-          title: string | null
-          treatment_type: string | null
-          updated_at: string | null
-          video_thumbnail_url: string | null
-          video_url: string
+          logo_url: string | null
+          phone: string | null
+          social_links: Json | null
+          updated_at: string
+          working_hours: Json | null
         }
         Insert: {
-          created_at?: string | null
-          description?: string | null
-          display_order?: number | null
+          address?: string | null
+          appointment_confirmation_email?: string | null
+          clinic_email?: string | null
+          created_at?: string
+          email?: string | null
+          hero_bg_color?: string | null
           id?: string
-          is_featured?: boolean | null
-          patient_image_url?: string | null
-          patient_name: string
-          title?: string | null
-          treatment_type?: string | null
-          updated_at?: string | null
-          video_thumbnail_url?: string | null
-          video_url: string
+          logo_url?: string | null
+          phone?: string | null
+          social_links?: Json | null
+          updated_at?: string
+          working_hours?: Json | null
         }
         Update: {
-          created_at?: string | null
-          description?: string | null
+          address?: string | null
+          appointment_confirmation_email?: string | null
+          clinic_email?: string | null
+          created_at?: string
+          email?: string | null
+          hero_bg_color?: string | null
+          id?: string
+          logo_url?: string | null
+          phone?: string | null
+          social_links?: Json | null
+          updated_at?: string
+          working_hours?: Json | null
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          author_name: string
+          created_at: string
+          display_order: number | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          quote: string
+          role: string | null
+          updated_at: string
+        }
+        Insert: {
+          author_name: string
+          created_at?: string
           display_order?: number | null
           id?: string
-          is_featured?: boolean | null
-          patient_image_url?: string | null
-          patient_name?: string
-          title?: string | null
-          treatment_type?: string | null
-          updated_at?: string | null
-          video_thumbnail_url?: string | null
-          video_url?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          quote: string
+          role?: string | null
+          updated_at?: string
+        }
+        Update: {
+          author_name?: string
+          created_at?: string
+          display_order?: number | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          quote?: string
+          role?: string | null
+          updated_at?: string
         }
         Relationships: []
       }
